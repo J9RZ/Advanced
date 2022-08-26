@@ -1,11 +1,19 @@
+getgenv().host = "HTDPX"
+getgenv().prefix = "/"
+getgenv().Alts = {
+    834851392
+}
+
 local Testing = false
 -- Cmds
 if table.find(getgenv().Alts,game.Players.LocalPlayer.UserId) then
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-869.777527, -38.3992119, -597.926636, 0.998623133, -5.90783422e-08, 0.0524581, 5.8615214e-08, 1, 1.03670654e-08, -0.0524581, -7.27794891e-09, 0.998623133)
+    game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer('RetainX V1 Premium!', 'All'); 
 	getgenv().PointInTable = table.find(getgenv().Alts,game.Players.LocalPlayer.UserId)
 else
 	return
 end
-if game.Players.LocalPlayer.Name == getgenv().Controller or getgenv().Executed then
+if game.Players.LocalPlayer.Name == getgenv().host or getgenv().Executed then
 	return
 end
 UserSettings().GameSettings.MasterVolume = 0
@@ -36,10 +44,10 @@ if Testing == false then
 	TextLabel.Position = UDim2.new(0.5, 0, 0.419999987, 0)
 	TextLabel.Size = UDim2.new(0, 279, 0, 34)
 	TextLabel.Font = Enum.Font.Gotham
-	TextLabel.Text = "[FREE]"..game.Players.LocalPlayer.Name
+	TextLabel.Text = ""..game.Players.LocalPlayer.Name
 	TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 	TextLabel.TextScaled = false
-	TextLabel.TextSize = 25.000
+	TextLabel.TextSize = 19.000
 	TextLabel.TextWrapped = false
 	if not game:IsLoaded() then
 		repeat wait(.1) until game:IsLoaded() 
@@ -67,16 +75,16 @@ local Services = {
 }
 
 local Variables = {
-	Controller = getgenv().Controller,
+	Host = getgenv().host,
 	Player = game.Players.LocalPlayer,
 }
 
-local Controller = Services["Players"]:FindFirstChild(Variables["Controller"])
+local Host = Services["Players"]:FindFirstChild(Variables["host"])
 
-if not Controller then
-	print("Controller is not here waiting for him to join!")
-	Services["Players"]:WaitForChild(Variables["Controller"],9e9)
-	Controller = Services["Players"]:FindFirstChild(Variables["Controller"])
+if not Host then
+	print("Host is not here waiting for him to join!")
+	Services["Players"]:WaitForChild(Variables["host"],9e9)
+	Host = Services["Players"]:FindFirstChild(Variables["host"])
 end
 print("Script loaded!")
 local CmdSettings = {}
@@ -91,14 +99,28 @@ local function Drop(Type)
 				[1] = "DropMoney",
 				[2] = "10000"
 			}
+			 local args = {
+			     [1] = "Block",
+			     [2] = true
+			 }
 			game:GetService("ReplicatedStorage").MainEvent:FireServer(unpack(args))
-			wait(2.5)
+			wait()
 		end
 	elseif Type == false then
 		CmdSettings["Dropping"] = nil
 		CmdSettings["CustomDrop"] = nil
 	end
 end
+
+local function AirLockW(Type)
+    local Anim = Instance.new("Animation")
+	Anim.AnimationId = "http://www.roblox.com/asset/?id=3541114300"
+	CurrAnim = game.Players.LocalPlayer.Character.Humanoid.Animator:LoadAnimation(Anim)
+	CurrAnim:Play()
+	CurrAnim:AdjustSpeed()
+local plrpos = game.Players.LocalPlayer.Character:FindFirstChild('HumanoidRootPart').Position
+game.Players.LocalPlayer.Character:FindFirstChild('HumanoidRootPart').CFrame = CFrame.new(plrpos.X, plrpos.Y + 12, plrpos.Z)
+game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
 
 local function AirLock(Type)
 	if CmdSettings["AirLock"] == nil and Type == true then
@@ -119,6 +141,18 @@ local function AirLock(Type)
 			BP:Destroy()
 		end
 	end
+end
+
+local function ground(Type)
+local plrpos = game.Players.LocalPlayer.Character:FindFirstChild('HumanoidRootPart').Position
+game.Players.LocalPlayer.Character:FindFirstChild('HumanoidRootPart').CFrame = CFrame.new(plrpos.X, plrpos.Y - 7, plrpos.Z)
+game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+end
+
+local function unground(Type)
+local plrpos = game.Players.LocalPlayer.Character:FindFirstChild('HumanoidRootPart').Position
+game.Players.LocalPlayer.Character:FindFirstChild('HumanoidRootPart').CFrame = CFrame.new(plrpos.X, plrpos.Y + 7, plrpos.Z)
+game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
 end
 
 local function GetPlayerFromString(str,ignore)
@@ -187,7 +221,7 @@ local function BringPlr(Target,POS)
 				end
 			until not TargetPlr or not TargetChar or not c or not c:FindFirstChild("BodyEffects") or not c.BodyEffects:FindFirstChild("K.O") or not c.BodyEffects:FindFirstChild("Grabbed")  or c.BodyEffects["K.O"].Value == true or c.BodyEffects.Grabbed.Value ~= nil or not TargetChar or not TargetChar:FindFirstChild("BodyEffects") or not TargetChar.BodyEffects:FindFirstChild("K.O") or TargetChar.BodyEffects["K.O"].Value == false 
 			if POS == nil then
-				Root.CFrame = Controller.Character.HumanoidRootPart.CFrame
+				Root.CFrame = Host.Character.HumanoidRootPart.CFrame
 			else
 				Root.CFrame = POS
 			end
@@ -205,10 +239,10 @@ end
 
 local BringLocations = {
 	["bank"] = CFrame.new(-396.988922, 21.7570763, -293.929779, -0.102468058, -1.9584887e-09, -0.994736314, 7.23731564e-09, 1, -2.71436984e-09, 0.994736314, -7.47735651e-09, -0.102468058),
-	["admin"] = CFrame.new(-871.187012, -32.6492119, -650.995789, 0.99990356, 2.48148222e-08, -0.0138866762, -2.50026613e-08, 1, -1.33529605e-08, 0.0138866762, 1.36988767e-08, 0.99990356),
-	["klub"] = CFrame.new(-264.434479, 0.0355005264, -430.854736, -0.999828756, 9.58909574e-09, -0.0185054261, 9.92017934e-09, 1, -1.77993904e-08, 0.0185054261, -1.79799198e-08, -0.999828756),	
-	["vault"] = CFrame.new(-495.485901, 23.1428547, -284.661713, -0.0313318223, -4.10440322e-08, 0.999509037, 2.18453966e-08, 1, 4.17489829e-08, -0.999509037, 2.31427428e-08, -0.0313318223),
-	["train"] = CFrame.new(591.396118, 34.5070686, -146.159561, 0.0698467195, -4.91725913e-08, -0.997557759, 5.03374231e-08, 1, -4.57684664e-08, 0.997557759, -4.70177071e-08, 0.0698467195),	
+	["admin"] = CFrame.new(-872.453674, -32.6421318, -532.476379, 0.999682248, -1.36019978e-08, 0.0252073351, 1.33811247e-08, 1, 8.93094043e-09, -0.0252073351, -8.59080007e-09, 0.999682248),
+	["club"] = CFrame.new(-264.434479, 0.0355005264, -430.854736, -0.999828756, 9.58909574e-09, -0.0185054261, 9.92017934e-09, 1, -1.77993904e-08, 0.0185054261, -1.79799198e-08, -0.999828756),	
+	["school"] = CFrame.new(-495.485901, 23.1428547, -284.661713, -0.0313318223, -4.10440322e-08, 0.999509037, 2.18453966e-08, 1, 4.17489829e-08, -0.999509037, 2.31427428e-08, -0.0313318223),
+	["train"] = CFrame.new(597.215088, 47.9999886, -112.846062, 0.68370676, -9.72993348e-08, 0.729756832, 5.26688382e-08, 1, 8.39859098e-08, -0.729756832, -1.89862916e-08, 0.68370676),	
 }
 
 local SetupsTable = {
@@ -220,32 +254,32 @@ local SetupsTable = {
 		Rows = 4,
 	},
 	Admin = {
-		Origin = CFrame.new(-891.395386, -39.3992043, -555.561279, 0.993751645, 5.56386439e-08, 0.111614145, -5.83213087e-08, 1, 2.07702193e-08, -0.111614145, -2.71499214e-08, 0.993751645),
+		Origin = CFrame.new(-888.779724, -39.3992119, -625.439636, 0.999435902, 4.88979657e-09, 0.0335837118, -6.28376506e-09, 1, 4.14017371e-08, -0.0335837118, -4.15894128e-08, 0.999435902),
 		ZMultiplier = 3,
 		XMultiplier = 8,
-		PerRow = 10,
-		Rows = 4,
+		PerRow = 5,
+		Rows = 8,
 	},
-	Klub = {
-		Origin = CFrame.new(-237.016571, -4.87585974, -411.940063, 0.994918466, -1.5840282e-08, -0.100683607, 6.8329018e-09, 1, -8.9807088e-08, 0.100683607, 8.86627731e-08, 0.994918466),
+	Club = {
+		Origin = CFrame.new(-285.537842, -6.20834732, -399.879974, 0.99059552, -3.44332363e-09, 0.136822924, 5.37076339e-09, 1, -1.3717953e-08, -0.136822924, 1.43237866e-08, 0.99059552),
 		ZMultiplier = 6,
 		XMultiplier = -12,
 		PerRow = 10,
 		Rows = 4,
 	},
-	Vault = {
-		Origin = CFrame.new(-519.201355, 23.1994667, -292.362, -0.0597927198, 6.70288927e-08, -0.998210788, 2.96872589e-08, 1, 6.53707701e-08, 0.998210788, -2.57254467e-08, -0.0597927198),
-		ZMultiplier = -2.5,
+	School = {
+		Origin = CFrame.new(-668.669678, 21.2499924, 196.352646, -0.99990356, 1.83830506e-09, 0.0138887549, 1.83941895e-09, 1, 6.74257039e-11, -0.0138887549, 9.29664401e-11, -0.99990356),
+		ZMultiplier = -4,
 		XMultiplier = 4,
 		PerRow = 10,
 		Rows = 4,
 	},
 	Train = {
-		Origin = CFrame.new(606.527588, 34.5070801, -159.083542, 0.0376962014, -7.60452892e-08, 0.999289274, 6.54496404e-08, 1, 7.36304173e-08, -0.999289274, 6.26275352e-08, 0.0376962014),
-		ZMultiplier = 5,
-		XMultiplier = -7,
-		PerRow = 10,
-		Rows = 4,
+		Origin = CFrame.new(570.302124, 34.4999886, -92.3424454, 0.192244366, 4.31691394e-09, -0.981347084, -5.05552507e-08, 1, -5.50472778e-09, 0.981347084, 5.06705007e-08, 0.192244366),
+		ZMultiplier = 2,
+		XMultiplier = -5,
+		PerRow = 5,
+		Rows = 8,
 	}
 }
 local function Setup(Type,Debugmode)
@@ -380,17 +414,18 @@ local function Initiate()
 	Connections["OnChat"] = game.ReplicatedStorage.DefaultChatSystemChatEvents.OnMessageDoneFiltering.OnClientEvent:Connect(function(data)
  		local Message = data.Message
 		local plr = game:service"Players"[data.FromSpeaker]
-		if plr.Name ~= getgenv().Controller then
+		if plr.Name ~= getgenv().host then
 			return
 		end
  		Message = string.lower(Message)
 		local Args = string.split(Message," ")
 		local AmountOfArgs = #Args
-		if Controller and not Crashed and Variables["Player"].Character and Variables["Player"].Character:FindFirstChild("HumanoidRootPart") and Variables["Player"].Character:FindFirstChild("Humanoid") and Variables["Player"].Character.Humanoid.Health > 0 then
-			if Args[1] == ".drop" then
+		if Host and not Crashed and Variables["Player"].Character and Variables["Player"].Character:FindFirstChild("HumanoidRootPart") and Variables["Player"].Character:FindFirstChild("Humanoid") and Variables["Player"].Character.Humanoid.Health > 0 then
+			if Args[1] == getgenv().prefix.."drop" then
+			    game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer('start', 'All'); 
 				Drop(true)
-			elseif not CmdSettings["AdOn"] and Args[1] == ".ad" and Args[2] == "on" then
-				local newStr = string.gsub(Message, ".ad on", "")
+			elseif not CmdSettings["AdOn"] and Args[1] == getgenv().prefix.."ad" and Args[2] == "on" then
+				local newStr = string.gsub(Message, "ad on", "")
 				CmdSettings["AdOn"] = true
 				while CmdSettings["AdOn"] do
 					game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(newStr, 'All'); 
@@ -403,9 +438,9 @@ local function Initiate()
 					DropFolder:Destroy()
 					DropFolder = nil
 				end
-			elseif Message == ".alts surround" and Controller and Controller.Character and Controller.Character:FindFirstChild("Humanoid") and Controller.Character.Humanoid.Health > 0 then
+			elseif Message == getgenv().prefix.."alts surround" and Host and Host.Character and Host.Character:FindFirstChild("Humanoid") and Host.Character.Humanoid.Health > 0 then
 				local angle = 0
-				local cfr = Controller.Character.HumanoidRootPart.CFrame*CFrame.new(0,1,0)
+				local cfr = Host.Character.HumanoidRootPart.CFrame*CFrame.new(0,1,0)
 				local Index = 0
 				local size = 3
 
@@ -444,13 +479,13 @@ local function Initiate()
 						CmdSettings[Var] = nil
 					end
 					CmdSettings = {}
-					setfpscap(3)
+					setfpscap(60)
 					wait(1)
-					setfpscap(3)
+					setfpscap(60)
 					wait(1)
-					setfpscap(3)
+					setfpscap(60)
 					wait(1)
-					setfpscap(3)	
+					setfpscap(60)	
 				end
 			elseif Args[1] == ".crash" and Args[2] == "encrypt" and not Crashed then
 				local Player = GetPlayerFromString(Args[3],true)
@@ -466,17 +501,18 @@ local function Initiate()
 						CmdSettings[Var] = nil
 					end
 					CmdSettings = {}
-					setfpscap(3)
+					setfpscap(60)
 					wait(1)
-					setfpscap(3)
+					setfpscap(60)
 					wait(1)
-					setfpscap(3)
+					setfpscap(60)
 					wait(1)
-					setfpscap(3)	
+					setfpscap(60)	
 				end
-			elseif Args[1] == ".stop" then
+			elseif Args[1] == getgenv().prefix.."stop" then
+			    game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer('end', 'All'); 
 				Drop(false)
-			elseif Args[1] == ".reset" then
+			elseif Args[1] == getgenv().prefix.."reset" then
 				if Variables["Player"].Character then
 					local FULLY_LOADED_CHAR = Variables["Player"].Character:FindFirstChild("FULLY_LOADED_CHAR")
 					if FULLY_LOADED_CHAR then
@@ -486,98 +522,58 @@ local function Initiate()
 					Variables["Player"].Character:Destroy()
 				end
 				Initiate()
-			elseif Args[1] == ".airlock" then
-				elseif Args[1] == ".airlock" then
-				local plrpos = game.Players.LocalPlayer.Character:FindFirstChild('HumanoidRootPart').Position
-game.Players.LocalPlayer.Character:FindFirstChild('HumanoidRootPart').CFrame = CFrame.new(plrpos.X, plrpos.Y + 7, plrpos.Z)
-game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true  
-        local Anim = Instance.new("Animation")
-	Anim.AnimationId = "http://www.roblox.com/asset/?id=3541114300"
-	CurrAnim = game.Players.LocalPlayer.Character.Humanoid.Animator:LoadAnimation(Anim)
-	CurrAnim:Play()
-	CurrAnim:AdjustSpeed()
-        game:GetService("ReplicatedStorage").MainEvent:FireServer(unpack(args))
-			elseif Args[1] == ".unlock" then
+			elseif Args[1] == getgenv().prefix.."ground" then
+				ground(true)
+			elseif Args[1] == getgenv().prefix.."unground" then
+				unground(true)
+			elseif Args[1] == getgenv().prefix.."airlock" then
+				AirLockW(true)
+			elseif Args[1] == getgenv().prefix.."unlock" then
 				AirLock(false)
-			elseif Message == ".bring" then
+			elseif Message == getgenv().prefix.."bring" then
 				-- didnt feel the need for a function lmao
-				if Controller and Controller.Character and Controller.Character:FindFirstChild("HumanoidRootPart") then
-					Variables["Player"].Character.HumanoidRootPart.CFrame = Controller.Character.HumanoidRootPart.CFrame*CFrame.new(0,0,-1)
+				if Host and Host.Character and Host.Character:FindFirstChild("HumanoidRootPart") then
+					Variables["Player"].Character.HumanoidRootPart.CFrame = Host.Character.HumanoidRootPart.CFrame*CFrame.new(0,0,-1)
 				end
-			elseif Args[1] == ".bring" and Args[2] == "Controller" and BringLocations[string.lower(Args[3])] then
-				BringPlr(Controller,BringLocations[string.lower(Args[3])])
-			elseif Args[1] == ".bring" and BringLocations[string.lower(Args[3])] then
+			elseif Args[1] == getgenv().prefix.."tp" and Args[2] == "host" and BringLocations[string.lower(Args[3])] then
+				BringPlr(Host,BringLocations[string.lower(Args[3])])
+			elseif Args[1] == getgenv().prefix.."tp" and BringLocations[string.lower(Args[3])] then
 				local FoundPlayer = GetPlayerFromString(Args[2])
 				if FoundPlayer then
 					BringPlr(FoundPlayer,BringLocations[string.lower(Args[3])])
 				end
-			elseif Args[1] == ".bring" and Args[3] == "Controller" then
+			elseif Args[1] == getgenv().prefix.."tp" and Args[3] == "host" then
 				local FoundPlayer = GetPlayerFromString(Args[2])
 				if FoundPlayer then
 					BringPlr(FoundPlayer,nil)
 				end
-			elseif Message == ".setup bank" then
+			elseif Message == getgenv().prefix.."setup bank" then
+			    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
 				Setup("Bank")
-			elseif Message == ".setup admin" then
+			elseif Message == getgenv().prefix.."setup admin" then
+			    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
 				Setup("Admin")
-			elseif Message == ".setup klub" then
-				Setup("Klub")
-			elseif Message == ".setup vault" then
-				Setup("Vault")
-			elseif Message == ".setup train" then
+			elseif Message == getgenv().prefix.."setup club" then
+			    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+				Setup("Club")
+			elseif Message == ".setup school" then
+			    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+				Setup("School")
+			elseif Message == getgenv().prefix.."setup train" then
+			    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
 				Setup("Train")
-			elseif Message == ".wallet on" then
+			elseif Message == getgenv().prefix.."wallet on" then
 				ShowWallet()
-			elseif Message == ".wallet off" then
+			elseif Message == getgenv().prefix.."wallet off" then
 				RemoveWallet()
-			elseif Message == ".dolphin" then
-				if CurrAnim and CurrAnim.IsPlaying then
-					CurrAnim:Stop()
-				end
-				local Anim = Instance.new("Animation")
-				Anim.AnimationId = "http://www.roblox.com/asset/?id=5918726674"
-				CurrAnim = game.Players.LocalPlayer.Character.Humanoid.Animator:LoadAnimation(Anim)
-				CurrAnim:Play()
-				CurrAnim:AdjustSpeed()
-			elseif Message == ".monkey" then
-				if CurrAnim and CurrAnim.IsPlaying then
-					CurrAnim:Stop()
-				end
-				local Anim = Instance.new("Animation")
-				Anim.AnimationId = "http://www.roblox.com/asset/?id=3333499508"
-				CurrAnim = game.Players.LocalPlayer.Character.Humanoid.Animator:LoadAnimation(Anim)
-				CurrAnim:Play()
-				CurrAnim:AdjustSpeed()
-			elseif Message == ".floss" then
-				if CurrAnim and CurrAnim.IsPlaying then
-					CurrAnim:Stop()
-				end
-				local Anim = Instance.new("Animation")
-				Anim.AnimationId = "http://www.roblox.com/asset/?id=5917459365"
-				CurrAnim = game.Players.LocalPlayer.Character.Humanoid.Animator:LoadAnimation(Anim)
-				CurrAnim:Play()
-				CurrAnim:AdjustSpeed()
-			elseif Message == ".shuffle" then
-				if CurrAnim and CurrAnim.IsPlaying then
-					CurrAnim:Stop()
-				end
-				local Anim = Instance.new("Animation")
-				Anim.AnimationId = "http://www.roblox.com/asset/?id=4349242221"
-				CurrAnim = game.Players.LocalPlayer.Character.Humanoid.Animator:LoadAnimation(Anim)
-				CurrAnim:Play()
-				CurrAnim:AdjustSpeed()
-			elseif Message == ".stopdance" then
-				if CurrAnim and CurrAnim.IsPlaying then
-					CurrAnim:Stop()
-				end
-			elseif Message == ".maskon" then
+			elseif Message == getgenv().prefix.."mask" then
 				local plr = game.Players.LocalPlayer
 				local c = plr.Character
 				local Root = c.PrimaryPart
 				local OldCF = Root.CFrame
 
 				local Tries = 0 
-				repeat wait(0.1) Tries = 1
+				repeat wait(0.1) Tries  = 1
 					Root.CFrame = workspace.Ignored.Shop["[Surgeon Mask] - $25"].Head.CFrame*CFrame.new(math.random(-1,1),0,math.random(-1,1))
 					fireclickdetector(workspace.Ignored.Shop["[Surgeon Mask] - $25"].ClickDetector)
 				until Tries >= 50 or not c or not c:FindFirstChild("Humanoid") or c:FindFirstChild"Mask" or plr.Backpack:FindFirstChild"Mask"
@@ -589,7 +585,7 @@ game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
 					c.Mask:Activate()
 				end
 				Root.CFrame = OldCF
-			elseif Message == ".maskoff" then
+			elseif Message == getgenv().prefix.."unmask" then
 				local plr = game.Players.LocalPlayer
 				local c = plr.Character
 				local Root = c.PrimaryPart
@@ -600,7 +596,7 @@ game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
 				elseif c:FindFirstChild("Mask") then
 					c.Mask:Activate()
 				end
-			elseif Args[1] == ".aura" then
+			elseif Args[1] == getgenv().prefix.."cashaura" then
 				local Player = GetPlayerFromString(Args[2],true)
 				if Player and Player == game.Players.LocalPlayer then
 					if CmdSettings["Aura"] == nil then
@@ -626,9 +622,9 @@ game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
 						end
 					end
 				end
-			elseif Args[1] == ".stopaura" then
+			elseif Args[1] == getgenv().prefix.."stopaura" then
 				CmdSettings["Aura"] = nil
-			elseif Args[1] == ".cdrop" and Args[2] ~= nil and not CmdSettings["CustomDrop"] then
+			elseif Args[1] == getgenv().prefix.."cdrop" and Args[2] ~= nil and not CmdSettings["CustomDrop"] then
 				local Number = GetNumberFromText(Args[2]) 
 				if Number and DropFolder then
 					CmdSettings["Aura"] = nil
@@ -638,7 +634,7 @@ game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
 					for i,v in pairs(DropFolder:GetChildren()) do
 						if v.Name == "MoneyDrop" then
 							local numbers = string.gsub(v.BillboardGui.TextLabel.Text, "%D", "")
-							OldMoney = numbers
+							OldMoney += numbers 
 						end
 					end
 					game.ReplicatedStorage.MainEvent:FireServer(
@@ -646,8 +642,9 @@ game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
 						10000
 					)
 					CmdSettings["CustomDrop"] = true
+					game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer('dropping', 'All'); 
 					coroutine.wrap(function()
-						repeat wait(2.5) 	
+						repeat wait() 	
 							game.ReplicatedStorage.MainEvent:FireServer(
 								"DropMoney",
 								10000
@@ -658,7 +655,7 @@ game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
 								for i,v in pairs(DropFolder:GetChildren()) do
 									if v.Name == "MoneyDrop" then
 										local numbers = string.gsub(v.BillboardGui.TextLabel.Text, "%D", "")
-										Money = numbers
+										Money += numbers
 									end
 								end 
 							end
@@ -667,7 +664,7 @@ game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
 						if CmdSettings["CustomDrop"] then
 							CmdSettings["CustomDrop"] = nil
 							CmdSettings["Dropping"] = nil
-							game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer('Custom Drop has finished.', 'All'); 
+							game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer('We have finished sir', 'All'); 
 						end
 					end)()
 				end
@@ -676,12 +673,13 @@ game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
 	end)
 end
 
-if Controller then
+if Host then
 	Initiate()
 end
 
 Services["Players"].PlayerAdded:Connect(function(Player)
-	if Player.Name == Variables["Controller"] then
+	if Player.Name == Variables["host"] then
 		Initiate()
-	end
+		end
 end)
+end
